@@ -1,8 +1,15 @@
 ﻿<Application x:Class="HomeBudgetMVVM.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="MainWindow.xaml">
+             xmlns:views="clr-namespace:HomeBudgetMVVM.Views"
+             xmlns:viewModels="clr-namespace:HomeBudgetMVVM.ViewModels"
+             StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-         
+        <DataTemplate DataType="{x:Type viewModels:OverviewViewModel}">
+            <views:OverviewUserControl />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:MainWindowViewModel}">
+            <views:MainWindow />
+        </DataTemplate>
     </Application.Resources>
 </Application>
