@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="HomeBudgetMVVM.Views.AccountsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:HomeBudgetMVVM.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <viewModels:AccountsViewModel />
+    </UserControl.DataContext>
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <TextBlock Margin="10" FontSize="15">Hantera konton</TextBlock>
+            <Button x:Name="AddAccount" Margin="10" >Lägg till nytt</Button>
+            <Button x:Name="ShareAccount" Margin="10" IsEnabled="False">Dela</Button>
+            <Button x:Name="DeleteAccount" Margin="10">Ta bort</Button>
+        </StackPanel>
+        <ListView x:Name="AccountList" Grid.Column="1" >
+            <!-- SelectionChanged="AccountList_SelectionChanged"> -->
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Kontonamn" DisplayMemberBinding="{Binding AccountName}" />
+                    <GridViewColumn Header="Kontonummer" DisplayMemberBinding="{Binding Number}" />
+                    <GridViewColumn Header="Saldo" DisplayMemberBinding="{Binding Balance}" />
+                    <GridViewColumn Header="Bank" DisplayMemberBinding="{Binding Bank}" />
+                    <GridViewColumn Header="Kommentar" DisplayMemberBinding="{Binding Comment}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView x:Name="AccountEventList" Grid.Column="2">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Typ" DisplayMemberBinding="{Binding EventType}" />
+                    <GridViewColumn Header="Summa" DisplayMemberBinding="{Binding EventBalance}" />
+                    <GridViewColumn Header="Kommentar" DisplayMemberBinding="{Binding EventComment}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</UserControl>

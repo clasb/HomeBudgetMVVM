@@ -62,11 +62,40 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Database\BudgetDatabase.cs" />
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\AccountEvent.cs" />
+    <Compile Include="Models\AccountManager.cs" />
+    <Compile Include="Models\BudgetManager.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="SQLite.cs" />
+    <Compile Include="SQLiteAsync.cs" />
+    <Compile Include="ViewModels\AccountsViewModel.cs" />
+    <Compile Include="ViewModels\ChartViewModel.cs" />
+    <Compile Include="ViewModels\IncomeExpenseViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\OverviewViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\AccountsUserControl.xaml.cs">
+      <DependentUpon>AccountsUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddAccountWindow.xaml.cs">
+      <DependentUpon>AddAccountWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddCategoryWindow.xaml.cs">
+      <DependentUpon>AddCategoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddIncomeExpenseWindow.xaml.cs">
+      <DependentUpon>AddIncomeExpenseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChartsUserControl.xaml.cs">
+      <DependentUpon>ChartsUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IncomeExpenseUserControl.xaml.cs">
+      <DependentUpon>IncomeExpenseUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -74,6 +103,30 @@
     <Compile Include="Views\OverviewUserControl.xaml.cs">
       <DependentUpon>OverviewUserControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AccountsUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddAccountWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddCategoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddIncomeExpenseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChartsUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IncomeExpenseUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -111,9 +164,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

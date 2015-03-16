@@ -42,89 +42,31 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <Button Margin="3"
-                            Click="ChartExpensesByCategory">
-                    Utgifter/kategori
-                </Button>
-                <Button Margin="3"
-                            Click="ChartIncomeByCategory">
-                    Inkomster/kategori
-                </Button>
-                <Button Margin="3"
-                            Click="ChartAssetsByAccount">
-                    Tillgångar/konto
-                </Button>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Button Margin="3" MinWidth="40" Click="SwitchToPie">
-                    Pie
-                </Button>
-                <Button Margin="3" MinWidth="40" Click="SwitchToStacked">
-                    Stack Bar
-                </Button>
-                <Button Margin="3" MinWidth="40" Click="SwitchToBar">
-                    Bar
-                </Button>
-                <Button Margin="3" MinWidth="40" Click="SwitchToRadial">
-                    Radial
-                </Button>
-            </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+            <TabControl Background="White">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="10" Height="10" Fill="DarkGray"/>
+                            <TextBlock>Utgifter/kategori</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel>
+                        <!-- Add content here like so : <views:OverviewUserControl/> -->
+                    </StackPanel>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="10" Height="10" Fill="DarkGray"/>
+                            <TextBlock>Utgifter/konto</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel>
+                        <!-- Add content here like so : <views:OverviewUserControl/> -->
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
         </StackPanel>
-        <chart:PieChart Visibility="Visible"
-                                    Grid.Row="3" Grid.Column="1" 
-                                    x:Name="Pie"
-                                    ChartTitle=""
-                                    ChartSubTitle=""
-                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-
-            <chart:PieChart.Series>
-                <chart:ChartSeries  SeriesTitle="ChartValues"
-                                                DisplayMember="Name"
-                                                ValueMember="Number"
-                                                ItemsSource="{Binding Path=ChartValues}" />
-            </chart:PieChart.Series>
-        </chart:PieChart>
-        <chart:StackedBarChart Visibility="Collapsed"
-                                    Grid.Row="3" Grid.Column="1" 
-                                    x:Name="Stacked"
-                                    ChartTitle=""
-                                    ChartSubTitle=""
-                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-            <chart:StackedBarChart.Series>
-                <chart:ChartSeries  SeriesTitle="ChartValues"
-                                                DisplayMember="Name"
-                                                ValueMember="Number"
-                                                ItemsSource="{Binding Path=ChartValues}" />
-            </chart:StackedBarChart.Series>
-        </chart:StackedBarChart>
-        <chart:ClusteredBarChart Visibility="Collapsed"
-                                    Grid.Row="3" Grid.Column="1" 
-                                    x:Name="Bar"
-                                    ChartTitle=""
-                                    ChartSubTitle=""
-                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-            <chart:ClusteredBarChart.Series>
-                <chart:ChartSeries  SeriesTitle="ChartValues"
-                                                DisplayMember="Name"
-                                                ValueMember="Number"
-                                                ItemsSource="{Binding Path=ChartValues}" />
-            </chart:ClusteredBarChart.Series>
-        </chart:ClusteredBarChart>
-        <chart:RadialGaugeChart Visibility="Collapsed"
-                                    Grid.Row="3" Grid.Column="1" 
-                                    x:Name="Radial"
-                                    ChartTitle=""
-                                    ChartSubTitle=""
-                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-            <chart:RadialGaugeChart.Series>
-                <chart:ChartSeries  SeriesTitle="ChartValues"
-                                                DisplayMember="Name"
-                                                ValueMember="Number"
-                                                ItemsSource="{Binding Path=ChartValues}" />
-            </chart:RadialGaugeChart.Series>
-        </chart:RadialGaugeChart>
-        </Grid>
+    </Grid>
 </UserControl>

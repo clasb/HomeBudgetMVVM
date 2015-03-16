@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="HomeBudgetMVVM.Views.ChartsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:metroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
+             xmlns:viewModels="clr-namespace:HomeBudgetMVVM.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <viewModels:ChartViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <!--
+        <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button Margin="3"
+                            Click="ChartExpensesByCategory">
+                Utgifter/kategori
+            </Button>
+            <Button Margin="3"
+                            Click="ChartIncomeByCategory">
+                Inkomster/kategori
+            </Button>
+            <Button Margin="3"
+                            Click="ChartAssetsByAccount">
+                Tillgångar/konto
+            </Button>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <Button Margin="3" MinWidth="40" Click="SwitchToPie">
+                Pie
+            </Button>
+            <Button Margin="3" MinWidth="40" Click="SwitchToStacked">
+                Stack Bar
+            </Button>
+            <Button Margin="3" MinWidth="40" Click="SwitchToBar">
+                Bar
+            </Button>
+            <Button Margin="3" MinWidth="40" Click="SwitchToRadial">
+                Radial
+            </Button>
+        </StackPanel>
+        </StackPanel>
+        <metroChart:PieChart Visibility="Visible"
+                                    Grid.Row="3" Grid.Column="1" 
+                                    x:Name="Pie"
+                                    ChartTitle=""
+                                    ChartSubTitle=""
+                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+
+            <metroChart:PieChart.Series>
+                <metroChart:ChartSeries  SeriesTitle="ChartValues"
+                                                DisplayMember="Name"
+                                                ValueMember="Number"
+                                                ItemsSource="{Binding Path=ChartValues}" />
+            </metroChart:PieChart.Series>
+        </metroChart:PieChart>
+        <metroChart:StackedBarChart Visibility="Collapsed"
+                                    Grid.Row="3" Grid.Column="1" 
+                                    x:Name="Stacked"
+                                    ChartTitle=""
+                                    ChartSubTitle=""
+                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+            <metroChart:StackedBarChart.Series>
+                <metroChart:ChartSeries  SeriesTitle="ChartValues"
+                                                DisplayMember="Name"
+                                                ValueMember="Number"
+                                                ItemsSource="{Binding Path=ChartValues}" />
+            </metroChart:StackedBarChart.Series>
+        </metroChart:StackedBarChart>
+        <metroChart:ClusteredBarChart Visibility="Collapsed"
+                                    Grid.Row="3" Grid.Column="1" 
+                                    x:Name="Bar"
+                                    ChartTitle=""
+                                    ChartSubTitle=""
+                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+            <metroChart:ClusteredBarChart.Series>
+                <metroChart:ChartSeries  SeriesTitle="ChartValues"
+                                                DisplayMember="Name"
+                                                ValueMember="Number"
+                                                ItemsSource="{Binding Path=ChartValues}" />
+            </metroChart:ClusteredBarChart.Series>
+        </metroChart:ClusteredBarChart>
+        <metroChart:RadialGaugeChart Visibility="Collapsed"
+                                    Grid.Row="3" Grid.Column="1" 
+                                    x:Name="Radial"
+                                    ChartTitle=""
+                                    ChartSubTitle=""
+                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+            <metroChart:RadialGaugeChart.Series>
+                <metroChart:ChartSeries  SeriesTitle="ChartValues"
+                                                DisplayMember="Name"
+                                                ValueMember="Number"
+                                                ItemsSource="{Binding Path=ChartValues}" />
+            </metroChart:RadialGaugeChart.Series>
+        </metroChart:RadialGaugeChart>
+        -->
+    </Grid> 
+</UserControl>
