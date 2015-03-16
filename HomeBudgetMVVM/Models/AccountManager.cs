@@ -12,14 +12,10 @@ namespace HomeBudgetMVVM.Models
 {
     class AccountManager
     {
-        public List<Account> accountList;
-        public List<Category> categoryList;
         public DateTime date;
 
         public AccountManager()
         {
-            accountList = new List<Account>();
-            categoryList = new List<Category>();
             date = DateTime.Now;
         }
 
@@ -29,7 +25,7 @@ namespace HomeBudgetMVVM.Models
 
             if (winAddAccount.ShowDialog() == true)
             {
-                accountList.Add(new Account(date)
+                App.Database.SaveAccount(new Account(date)
                 {
                     AccountName = winAddAccount.AccountName,
                     Number = winAddAccount.Number,
@@ -44,7 +40,7 @@ namespace HomeBudgetMVVM.Models
         internal void SetDate(DateTime d)
         {
             date = d;
-            foreach (Account a in accountList)
+            foreach (Account a in App.Database.Accounts().ToList())
             {
                 a.Date = d;
                 a.UpdateBalance();
@@ -55,5 +51,43 @@ namespace HomeBudgetMVVM.Models
         {
         }
 
+
+        internal void AddAccountEvent(String s)
+        {
+            AddIncomeExpenseWindow winAIE = new AddIncomeExpenseWindow(App.Database.Accounts().ToList(), App.Database.Categories().ToList());
+
+            if (winAIE.ShowDialog() == true)
+            {
+                double balance;
+                if (s.Equals("Income"))
+                {
+                    balance = winAIE.EventBalance;
+                    Category tempCategory = App.Database.GetCategory(winAIE.EventCategory.ID);
+                    tempCategory.AddIncome(balance);
+                    App.Database.SaveCategory(tempCategory);
+                }
+                else
+                {
+                    balance = -winAIE.EventBalance;
+                    Category tempCategory = App.Database.GetCategory(winAIE.EventCategory.ID);
+                    tempCategory.AddIncome(balance);
+                    App.Database.SaveCategory(tempCategory);
+                }
+
+                AddAccountEvent(new AccountEvent()
+                {
+                    EventType = s,
+                    AccountID = winAIE.EventAccount.ID,
+                    EventBalance = balance,
+                    EventComment = winAIE.EventComment,
+                    Date = this.date
+                });
+            }
+        }
+
+        internal void AddAccountEvent(AccountEvent a)
+        {
+            App.Database.SaveAccountEvent(a);
+        }
     }
 }

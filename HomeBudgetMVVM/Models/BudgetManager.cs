@@ -17,7 +17,7 @@ namespace HomeBudgetMVVM.Models
 
         public List<Account> GetAccountList()
         {
-            return am.accountList;
+            return App.Database.Accounts().ToList();
         }
 
         public List<AccountEvent> GetAccountEventList(Account a)
@@ -27,7 +27,7 @@ namespace HomeBudgetMVVM.Models
 
         public List<Category> GetCategoryList()
         {
-            return am.categoryList;
+            return App.Database.Categories().ToList();
         }
 
         internal void AddAccount()
@@ -47,12 +47,12 @@ namespace HomeBudgetMVVM.Models
 
         internal void NewIncome()
         {
-            //am.AddAccountEvent("Income");
+            am.AddAccountEvent("Income");
         }
 
         internal void NewExpense()
         {
-            //am.AddAccountEvent("Expense");
+            am.AddAccountEvent("Expense");
         }
 
         internal DateTime GetDate()
@@ -77,7 +77,7 @@ namespace HomeBudgetMVVM.Models
 
         internal void NewCategory()
         {
-            //am.AddCategory();
+            am.AddCategory();
         }
     }
 }
