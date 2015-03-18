@@ -49,6 +49,7 @@ namespace HomeBudgetMVVM.Models
 
         internal void DeleteAccount(Account a)
         {
+            App.Database.DeleteAccount(a.ID);
         }
 
 
@@ -56,38 +57,95 @@ namespace HomeBudgetMVVM.Models
         {
             AddIncomeExpenseWindow winAIE = new AddIncomeExpenseWindow(App.Database.Accounts().ToList(), App.Database.Categories().ToList());
 
-            if (winAIE.ShowDialog() == true)
+            if (winAIE.ShowDialog() != true) return;
+            double balance;
+            if (s.Equals("Income"))
             {
-                double balance;
-                if (s.Equals("Income"))
-                {
-                    balance = winAIE.EventBalance;
-                    Category tempCategory = App.Database.GetCategory(winAIE.EventCategory.ID);
-                    tempCategory.AddIncome(balance);
-                    App.Database.SaveCategory(tempCategory);
-                }
-                else
-                {
-                    balance = -winAIE.EventBalance;
-                    Category tempCategory = App.Database.GetCategory(winAIE.EventCategory.ID);
-                    tempCategory.AddIncome(balance);
-                    App.Database.SaveCategory(tempCategory);
-                }
-
-                AddAccountEvent(new AccountEvent()
-                {
-                    EventType = s,
-                    AccountID = winAIE.EventAccount.ID,
-                    EventBalance = balance,
-                    EventComment = winAIE.EventComment,
-                    Date = this.date
-                });
+                balance = winAIE.EventBalance;
             }
+            else
+            {
+                balance = -winAIE.EventBalance;
+            }
+
+            AddAccountEvent(new AccountEvent()
+            {
+                EventType = s,
+                AccountID = winAIE.EventAccount.ID,
+                CategoryID = winAIE.EventCategory.ID,
+                EventBalance = balance,
+                EventComment = winAIE.EventComment,
+                Date = this.date
+            });
         }
 
         internal void AddAccountEvent(AccountEvent a)
         {
             App.Database.SaveAccountEvent(a);
+        }
+
+        internal void AddCategory()
+        {
+            AddCategoryWindow winAC = new AddCategoryWindow();
+
+            if (winAC.ShowDialog() == true)
+            {
+                App.Database.SaveCategory(new Category()
+                {
+                    CategoryName = winAC.CategoryName,
+                    CategoryComment = winAC.CategoryComment,
+                });
+            }
+        }
+
+        public List<AccountEvent> GetAccountEventListByAccount(Account a)
+        {
+            {
+                try
+                {
+                    return App.Database.GetAccountEventsByAccount(a.ID).ToList();
+                }
+                catch (NullReferenceException)
+                {
+                    return new List<AccountEvent>();
+                }
+            }
+        }
+
+        public List<AccountEvent> GetAccountEventListByCategory(Category c)
+        {
+            {
+                try
+                {
+                    return App.Database.GetAccountEventsByCategory(c.ID).ToList();
+                }
+                catch (NullReferenceException)
+                {
+                    return new List<AccountEvent>();
+                }
+            }
+        }
+
+        public double GetExpensesByCategory(Category c)
+        {
+            double result = 0;
+            var temp = App.Database.GetAccountEventsByCategory(c.ID).ToList();
+            if (temp != null)
+            {
+                result += temp.Where(cat => cat.EventBalance < 0).Sum(cat => cat.EventBalance);
+            }
+            return result;
+        }
+
+        public double GetIncomeByCategory(Category c)
+        {
+            double result = 0;
+            var temp = App.Database.GetAccountEventsByCategory(c.ID).ToList();
+            if (temp != null)
+            {
+                result += temp.Where(cat => cat.EventBalance > 0).Sum(cat => cat.EventBalance);
+            }
+            return result;
         }
     }
 }

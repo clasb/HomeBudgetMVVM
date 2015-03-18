@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SQLite;
+using SQLite.Net.Attributes;
 
 namespace HomeBudgetMVVM.Models
 {
@@ -44,7 +44,6 @@ namespace HomeBudgetMVVM.Models
         public double StartBalance { get; set; }
         public String Bank { get; set; }
         public String Comment { get; set; }
-        public DateTime Date;
-        public int CategoryID { get; set; }
+        public DateTime Date { get; set; }
     }
 }

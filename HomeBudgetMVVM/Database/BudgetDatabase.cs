@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation.Peers;
 using HomeBudgetMVVM.Models;
-using SQLite;
+using SQLite.Net;
 
 namespace HomeBudgetMVVM.Database
 {
@@ -97,6 +97,24 @@ namespace HomeBudgetMVVM.Database
             lock (locker)
             {
                 return database.Table<AccountEvent>().FirstOrDefault(accountEvent => accountEvent.ID == id);
+            }
+        }
+
+        public IEnumerable<AccountEvent> GetAccountEventsByAccount(int id)
+        {
+            lock (locker)
+            {
+                var eventList = database.Query<AccountEvent>("SELECT * FROM AccountEvent WHERE AccountID = ?", id);
+                return eventList;
+            }
+        }
+
+        public IEnumerable<AccountEvent> GetAccountEventsByCategory(int id)
+        {
+            lock (locker)
+            {
+                var eventList = database.Query<AccountEvent>("SELECT * FROM AccountEvent WHERE CategoryID = ?", id);
+                return eventList;
             }
         }
 

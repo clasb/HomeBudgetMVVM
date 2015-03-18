@@ -20,14 +20,34 @@ namespace HomeBudgetMVVM.Models
             return App.Database.Accounts().ToList();
         }
 
-        public List<AccountEvent> GetAccountEventList(Account a)
+        public List<AccountEvent> GetAccountEventList()
         {
-            return new List<AccountEvent>();
+            return App.Database.AccountEvents().ToList();
+        }
+
+        public List<AccountEvent> GetAccountEventListByAccount(Account a)
+        {
+            return am.GetAccountEventListByAccount(a);
+        }
+
+        public List<AccountEvent> GetAccountEventListByCategory(Category c)
+        {
+            return am.GetAccountEventListByCategory(c);
         }
 
         public List<Category> GetCategoryList()
         {
             return App.Database.Categories().ToList();
+        }
+
+        public double GetExpensesByCategory(Category c)
+        {
+            return am.GetExpensesByCategory(c);
+        }
+
+        public double GetIncomeByCategory(Category c)
+        {
+            return am.GetIncomeByCategory(c);
         }
 
         internal void AddAccount()

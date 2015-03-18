@@ -6,14 +6,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using HomeBudgetMVVM.Models;
+using Microsoft.Practices.Prism.Commands;
 
 namespace HomeBudgetMVVM.ViewModels
 {
-    public class ChartViewModel
-    { 
+    public class ChartViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private BudgetManager bm;
 
-        /*
+        public ChartViewModel()
+        {
+            bm = new BudgetManager();
+            _chartExpensesByCategoryCommand = new DelegateCommand(ChartExpensesByCategory);
+            _chartIncomeByCategoryCommand = new DelegateCommand(ChartIncomeByCategory);
+            _chartAssetsByAccountCommand = new DelegateCommand(ChartAssetsByAccount);
+            ChartIncomeByCategory();
+            _chartValues = new ObservableCollection<DataPoint>();
+        }
+
         #region Chart
 
         private void RaisePropertyChanged(string propertyName)
@@ -24,16 +37,8 @@ namespace HomeBudgetMVVM.ViewModels
             }
         }
 
-        
-        public static readonly DependencyProperty ChartValuesProperty = DependencyProperty.Register("ChartValues", typeof(ObservableCollection<DataPoint>), typeof(MainWindow), new UIPropertyMetadata(null));
-        public ObservableCollection<DataPoint> ChartValues
-        {
-            get { return (ObservableCollection<DataPoint>)GetValue(ChartValuesProperty); }
-            set { SetValue(ChartValuesProperty, value); }
-        }
-
+        #region Properties
         private ObservableCollection<DataPoint> _chartValues;
-
         public ObservableCollection<DataPoint> ChartValues
         {
             get { return _chartValues;}
@@ -44,95 +49,142 @@ namespace HomeBudgetMVVM.ViewModels
             }
         }
 
+        private String _chartTitle;
+        public String ChartTitle
+        {
+            get { return _chartTitle; }
+            set
+            {
+                _chartTitle = value;
+                RaisePropertyChanged("ChartTitle");
+            }
+        }
+
+        private String _chartSubTitle;
+        public String ChartSubTitle
+        {
+            get { return _chartSubTitle; }
+            set
+            {
+                _chartSubTitle = value;
+                RaisePropertyChanged("ChartTitle");
+            }
+        }
+
+        private object _selectedItem = null;
+        public object SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                _selectedItem = value;
+                RaisePropertyChanged("SelectedItem");
+            }
+        }
+
         public class DataPoint
         {
             public string Name { get; set; }
             public double Number { get; set; }
         }
+        #endregion
 
-        private void ChartExpensesByCategory(object sender, RoutedEventArgs e)
+        #region ICommands
+
+        private ICommand _chartIncomeByCategoryCommand;
+        public ICommand ChartIncomeByCategoryCommand
         {
+            get { return _chartIncomeByCategoryCommand; }
+        }
+
+        private ICommand _chartExpensesByCategoryCommand;
+        public ICommand ChartExpensesByCategoryCommand
+        {
+            get { return _chartExpensesByCategoryCommand; }
+        }
+
+        private ICommand _chartAssetsByAccountCommand;
+        public ICommand ChartAssetsByAccountCommand
+        {
+            get { return _chartAssetsByAccountCommand; }
+        }
+        #endregion
+
+        #region Commands
+        private void ChartExpensesByCategory()
+        {
+            if (ChartValues == null) return;
             ChartValues.Clear();
-            foreach (Category c in bm.GetCategoryList())
+            foreach (var c in bm.GetCategoryList())
             {
-                double temp;
-                temp = c.CategoryExpenseAdded;
-                if (temp < 0)
-                {
-                    temp = -temp;
-                    ChartValues.Add(new DataPoint() { Name = c.CategoryName, Number = temp });
-                }
+                ChartValues.Add(new DataPoint() {Name = c.CategoryName, Number = -bm.GetExpensesByCategory(c)});
             }
             SetChartTitles("Utgifter", "Totalt utgifter efter kategori");
         }
 
-        private void ChartIncomeByCategory(object sender, RoutedEventArgs e)
+        private void ChartIncomeByCategory()
         {
+            if (ChartValues == null) return;
             ChartValues.Clear();
-            foreach (Category c in bm.GetCategoryList())
+            foreach (var c in bm.GetCategoryList())
             {
-                if (c.CategoryIncomeAdded > 0)
-                    ChartValues.Add(new DataPoint() { Name = c.CategoryName, Number = c.CategoryIncomeAdded });
+                ChartValues.Add(new DataPoint() {Name = c.CategoryName, Number = bm.GetIncomeByCategory(c)});
             }
             SetChartTitles("Inkomster", "Totalt inkomster efter kategori");
         }
 
-        private void ChartAssetsByAccount(object sender, RoutedEventArgs e)
+        private void ChartAssetsByAccount()
         {
+            if (ChartValues == null) return;
             ChartValues.Clear();
-            foreach (Account a in bm.GetAccountList())
+            foreach (var a in bm.GetAccountList())
             {
                 ChartValues.Add(new DataPoint() { Name = a.AccountName, Number = a.Balance });
             }
             SetChartTitles("Tillgångar", "Totalt antal tillgångar per konto");
         }
-
+        
         private void SwitchToPie(object sender, RoutedEventArgs e)
         {
             CollapseAllCharts();
-            view.Pie.Visibility = Visibility.Visible;
+            //view.Pie.Visibility = Visibility.Visible;
         }
 
         private void SwitchToStacked(object sender, RoutedEventArgs e)
         {
             CollapseAllCharts();
-            view.Stacked.Visibility = Visibility.Visible;
+            //view.Stacked.Visibility = Visibility.Visible;
         }
 
         private void SwitchToBar(object sender, RoutedEventArgs e)
         {
             CollapseAllCharts();
-            view.Bar.Visibility = Visibility.Visible;
+            //view.Bar.Visibility = Visibility.Visible;
         }
 
         private void SwitchToRadial(object sender, RoutedEventArgs e)
         {
             CollapseAllCharts();
-            view.Radial.Visibility = Visibility.Visible;
+            //view.Radial.Visibility = Visibility.Visible;
         }
 
         private void CollapseAllCharts()
         {
-            view.Pie.Visibility = Visibility.Collapsed;
-            view.Stacked.Visibility = Visibility.Collapsed;
-            view.Bar.Visibility = Visibility.Collapsed;
-            view.Radial.Visibility = Visibility.Collapsed;
+            //view.Pie.Visibility = Visibility.Collapsed;
+            //view.Stacked.Visibility = Visibility.Collapsed;
+            //view.Bar.Visibility = Visibility.Collapsed;
+            //view.Radial.Visibility = Visibility.Collapsed;
         }
 
         private void SetChartTitles(string title, string subtitle)
         {
-            //ChartTitle = title;
-            view.Pie.ChartSubTitle = subtitle;
-            view.Bar.ChartTitle = title;
-            view.Bar.ChartSubTitle = subtitle;
-            view.Stacked.ChartTitle = title;
-            view.Stacked.ChartSubTitle = subtitle;
-            view.Radial.ChartTitle = title;
-            view.Radial.ChartSubTitle = subtitle;
+            ChartTitle = title;
+            ChartSubTitle = subtitle;
         }
+        #endregion
 
         #endregion
-        */
+
     }
     
 }

@@ -11,91 +11,111 @@
         <viewModels:ChartViewModel />
     </UserControl.DataContext>
     <Grid>
-        <!--
-        <StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Button Margin="3"
-                            Click="ChartExpensesByCategory">
+            <Button Margin="3" Command="{Binding ChartExpensesByCategoryCommand}">
                 Utgifter/kategori
             </Button>
-            <Button Margin="3"
-                            Click="ChartIncomeByCategory">
+            <Button Margin="3" Command="{Binding ChartIncomeByCategoryCommand}">
                 Inkomster/kategori
             </Button>
-            <Button Margin="3"
-                            Click="ChartAssetsByAccount">
+            <Button Margin="3" Command="{Binding ChartAssetsByAccountCommand}">
                 Tillgångar/konto
             </Button>
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal">
-            <Button Margin="3" MinWidth="40" Click="SwitchToPie">
-                Pie
-            </Button>
-            <Button Margin="3" MinWidth="40" Click="SwitchToStacked">
-                Stack Bar
-            </Button>
-            <Button Margin="3" MinWidth="40" Click="SwitchToBar">
-                Bar
-            </Button>
-            <Button Margin="3" MinWidth="40" Click="SwitchToRadial">
-                Radial
-            </Button>
-        </StackPanel>
-        </StackPanel>
-        <metroChart:PieChart Visibility="Visible"
-                                    Grid.Row="3" Grid.Column="1" 
+        <TabControl Grid.Column="0" Background="White">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="10" Height="10" Fill="DarkGray"/>
+                        <TextBlock>Cirkeldiagram</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <StackPanel>
+                    <metroChart:PieChart Visibility="Visible"
                                     x:Name="Pie"
-                                    ChartTitle=""
-                                    ChartSubTitle=""
+                                    ChartTitle="{Binding ChartTitle}"
+                                    ChartSubTitle="{Binding ChartSubTitle}"
                                     SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
 
-            <metroChart:PieChart.Series>
-                <metroChart:ChartSeries  SeriesTitle="ChartValues"
+                        <metroChart:PieChart.Series>
+                            <metroChart:ChartSeries  SeriesTitle="ChartValues"
                                                 DisplayMember="Name"
                                                 ValueMember="Number"
                                                 ItemsSource="{Binding Path=ChartValues}" />
-            </metroChart:PieChart.Series>
-        </metroChart:PieChart>
-        <metroChart:StackedBarChart Visibility="Collapsed"
-                                    Grid.Row="3" Grid.Column="1" 
+                        </metroChart:PieChart.Series>
+                    </metroChart:PieChart>
+                </StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="10" Height="10" Fill="DarkGray"/>
+                        <TextBlock>Konton</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <StackPanel>
+                    <metroChart:StackedBarChart Visibility="Visible"
                                     x:Name="Stacked"
-                                    ChartTitle=""
-                                    ChartSubTitle=""
+                                    ChartTitle="{Binding ChartTitle}"
+                                    ChartSubTitle="{Binding ChartSubTitle}"
                                     SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-            <metroChart:StackedBarChart.Series>
-                <metroChart:ChartSeries  SeriesTitle="ChartValues"
+                        <metroChart:StackedBarChart.Series>
+                            <metroChart:ChartSeries  SeriesTitle="ChartValues"
                                                 DisplayMember="Name"
                                                 ValueMember="Number"
                                                 ItemsSource="{Binding Path=ChartValues}" />
-            </metroChart:StackedBarChart.Series>
-        </metroChart:StackedBarChart>
-        <metroChart:ClusteredBarChart Visibility="Collapsed"
-                                    Grid.Row="3" Grid.Column="1" 
+                        </metroChart:StackedBarChart.Series>
+                    </metroChart:StackedBarChart>
+                </StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="10" Height="10" Fill="DarkGray"/>
+                        <TextBlock>Inkomster och utgifter</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <StackPanel>
+                    <metroChart:ClusteredBarChart Visibility="Visible"
                                     x:Name="Bar"
-                                    ChartTitle=""
-                                    ChartSubTitle=""
+                                    ChartTitle="{Binding ChartTitle}"
+                                    ChartSubTitle="{Binding ChartSubTitle}"
                                     SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-            <metroChart:ClusteredBarChart.Series>
-                <metroChart:ChartSeries  SeriesTitle="ChartValues"
+                        <metroChart:ClusteredBarChart.Series>
+                            <metroChart:ChartSeries  SeriesTitle="ChartValues"
                                                 DisplayMember="Name"
                                                 ValueMember="Number"
                                                 ItemsSource="{Binding Path=ChartValues}" />
-            </metroChart:ClusteredBarChart.Series>
-        </metroChart:ClusteredBarChart>
-        <metroChart:RadialGaugeChart Visibility="Collapsed"
-                                    Grid.Row="3" Grid.Column="1" 
+                        </metroChart:ClusteredBarChart.Series>
+                    </metroChart:ClusteredBarChart>
+                </StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="10" Height="10" Fill="DarkGray"/>
+                        <TextBlock>Inkomster och utgifter</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <StackPanel>
+                    <metroChart:RadialGaugeChart Visibility="Visible"
                                     x:Name="Radial"
-                                    ChartTitle=""
-                                    ChartSubTitle=""
+                                    ChartTitle="{Binding ChartTitle}"
+                                    ChartSubTitle="{Binding ChartSubTitle}"
                                     SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
-            <metroChart:RadialGaugeChart.Series>
-                <metroChart:ChartSeries  SeriesTitle="ChartValues"
+                        <metroChart:RadialGaugeChart.Series>
+                            <metroChart:ChartSeries  SeriesTitle="ChartValues"
                                                 DisplayMember="Name"
                                                 ValueMember="Number"
                                                 ItemsSource="{Binding Path=ChartValues}" />
-            </metroChart:RadialGaugeChart.Series>
-        </metroChart:RadialGaugeChart>
-        -->
+                        </metroChart:RadialGaugeChart.Series>
+                    </metroChart:RadialGaugeChart>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        </StackPanel>
+        
+        
+        
+        
     </Grid> 
 </UserControl>
