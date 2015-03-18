@@ -16,23 +16,6 @@ namespace HomeBudgetMVVM.Models
             Date = DateTime.Now;
         }
 
-        public void AddExpense(double d)
-        {
-            CategoryExpenseAdded += d;
-            UpdateCategoryBalance();
-        }
-
-        public void AddIncome(double d)
-        {
-            CategoryIncomeAdded += d;
-            UpdateCategoryBalance();
-        }
-
-        private void UpdateCategoryBalance()
-        {
-            CategoryBalance = CategoryIncomeAdded + CategoryExpenseAdded;
-        }
-
         public override string ToString()
         {
             return CategoryName;
@@ -43,8 +26,6 @@ namespace HomeBudgetMVVM.Models
         public string CategoryName { get; set; }
         public string CategoryComment { get; set; }
         public DateTime Date { get; set; }
-        public double CategoryIncomeAdded { get; set; }
-        public double CategoryExpenseAdded { get; set; }
         public double CategoryBalance { get; set; }
     }
 }
