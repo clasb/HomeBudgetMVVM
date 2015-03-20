@@ -144,6 +144,11 @@ namespace HomeBudgetMVVM.Models
             }
         }
 
+        public AccountEvent GetAccountEventByName(string name)
+        {
+            return GetPastAccountEvents().Find(x => x.EventType.Contains(name));
+        }
+
         public List<AccountEvent> GetComingAccountEvents()
         {
             try
@@ -199,10 +204,15 @@ namespace HomeBudgetMVVM.Models
             }
         }
 
-        public double GetExpensesByCategory(Category c)
+        public double GetExpensesByCategory(Category c, int year)
         {
             double result = 0;
-            var temp = App.Database.GetAccountEventsByCategory(c.ID).ToList();
+            List<AccountEvent> temp = new List<AccountEvent>();
+            foreach (var ae in App.Database.GetAccountEventsByCategory(c.ID).ToList())
+            {
+                if (ae.Date.Year == year)
+                    temp.Add(ae);
+            }
             if (temp != null)
             {
                 result += temp.Where(cat => cat.EventBalance < 0).Sum(cat => cat.EventBalance);
@@ -210,10 +220,47 @@ namespace HomeBudgetMVVM.Models
             return result;
         }
 
-        public double GetIncomeByCategory(Category c)
+        public double GetExpensesByCategory(Category c, int month, int year)
         {
             double result = 0;
-            var temp = App.Database.GetAccountEventsByCategory(c.ID).ToList();
+            List<AccountEvent> temp = new List<AccountEvent>();
+            foreach(var ae in App.Database.GetAccountEventsByCategory(c.ID).ToList())
+            {
+                if (ae.Date.Month == month && ae.Date.Year == year)
+                    temp.Add(ae);
+            }
+            if (temp != null)
+            {
+                result += temp.Where(cat => cat.EventBalance < 0).Sum(cat => cat.EventBalance);
+            }
+            return result;
+        }
+
+        public double GetIncomeByCategory(Category c, int year)
+        {
+            double result = 0;
+            List<AccountEvent> temp = new List<AccountEvent>();
+            foreach (var ae in App.Database.GetAccountEventsByCategory(c.ID).ToList())
+            {
+                if (ae.Date.Year == year)
+                    temp.Add(ae);
+            }
+            if (temp != null)
+            {
+                result += temp.Where(cat => cat.EventBalance > 0).Sum(cat => cat.EventBalance);
+            }
+            return result;
+        }
+
+        public double GetIncomeByCategory(Category c, int month, int year)
+        {
+            double result = 0;
+            List<AccountEvent> temp = new List<AccountEvent>();
+            foreach (var ae in App.Database.GetAccountEventsByCategory(c.ID).ToList())
+            {
+                if (ae.Date.Month == month && ae.Date.Year == year)
+                    temp.Add(ae);
+            }
             if (temp != null)
             {
                 result += temp.Where(cat => cat.EventBalance > 0).Sum(cat => cat.EventBalance);

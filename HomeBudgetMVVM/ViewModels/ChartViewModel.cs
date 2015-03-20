@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace HomeBudgetMVVM.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private BudgetManager bm;
+        const string MONTH_NOT_CHOSEN = "Hela året";
 
         public ChartViewModel()
         {
@@ -27,6 +29,8 @@ namespace HomeBudgetMVVM.ViewModels
             _chartAssetsByAccountCommand = new DelegateCommand(ChartAssetsByAccount);
             ChartIncomeByCategory();
             _chartValues = new ObservableCollection<DataPoint>();
+            MonthString = MONTH_NOT_CHOSEN;
+            Year = 2015;
         }
 
         #region Chart
@@ -59,7 +63,26 @@ namespace HomeBudgetMVVM.ViewModels
             set
             {
                 _year = value;
+                try { CurrentActiveCommand.Execute(null); }
+                catch { }
+                
                 RaisePropertyChanged("Year");
+            }
+        }
+
+        private string _monthString;
+
+        public string MonthString 
+        {
+            get { return _monthString; }
+            set
+            {
+                _monthString = value;
+                Month = !String.Equals(value, MONTH_NOT_CHOSEN) ? DateTime.ParseExact(value, "MMMM", CultureInfo.CurrentCulture).Month : 0;
+                try {
+                    CurrentActiveCommand.Execute(null); } 
+                catch (NullReferenceException) { }
+                RaisePropertyChanged(MonthString);
             }
         }
 
@@ -74,7 +97,7 @@ namespace HomeBudgetMVVM.ViewModels
             get
             {
                 ObservableCollection<string> monthNames = new ObservableCollection<string>();
-                monthNames.Add("Hela året");
+                monthNames.Add(MONTH_NOT_CHOSEN);
                 foreach (var month in Months)
                 {
                     monthNames.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
@@ -82,7 +105,7 @@ namespace HomeBudgetMVVM.ViewModels
                 return monthNames;
             }
         }
-        
+
         private ObservableCollection<int> _years;
         public ObservableCollection<int> Years
         {
@@ -97,9 +120,6 @@ namespace HomeBudgetMVVM.ViewModels
             }
         }
 
-         
-
-
         private ObservableCollection<DataPoint> _chartValues;
         public ObservableCollection<DataPoint> ChartValues
         {
@@ -108,6 +128,17 @@ namespace HomeBudgetMVVM.ViewModels
             {
                 _chartValues = value;
                 RaisePropertyChanged("ChartValues");
+            }
+        }
+
+        private ObservableCollection<DataPoint> _chartValuesAll;
+        public ObservableCollection<DataPoint> ChartValuesAll
+        {
+            get { return _chartValuesAll; }
+            set
+            {
+                _chartValuesAll = value;
+                RaisePropertyChanged("ChartValuesSpecificDate");
             }
         }
 
@@ -148,6 +179,7 @@ namespace HomeBudgetMVVM.ViewModels
         {
             public string Name { get; set; }
             public double Number { get; set; }
+            public DateTime Date { get; set; }
         }
         #endregion
 
@@ -170,6 +202,12 @@ namespace HomeBudgetMVVM.ViewModels
         {
             get { return _chartAssetsByAccountCommand; }
         }
+
+        private ICommand _currentActiveCommand;
+        public ICommand CurrentActiveCommand
+        {
+            get { return _currentActiveCommand;}
+        }
         #endregion
 
         #region Commands
@@ -177,22 +215,46 @@ namespace HomeBudgetMVVM.ViewModels
         {
             if (ChartValues == null) return;
             ChartValues.Clear();
-            foreach (var c in bm.GetCategoryList())
+            if (Month != 0)
             {
-                ChartValues.Add(new DataPoint() {Name = c.CategoryName, Number = -bm.GetExpensesByCategory(c)});
+                foreach (var c in bm.GetCategoryList())
+                {
+                    ChartValues.Add(new DataPoint() {Name = c.CategoryName, Number = -bm.GetExpensesByCategory(c, Month, Year)});
+                }
             }
+            else
+            {
+                foreach (var c in bm.GetCategoryList())
+                {
+                    ChartValues.Add(new DataPoint() { Name = c.CategoryName, Number = -bm.GetExpensesByCategory(c, Year) });
+                }
+            }
+            ChartValuesAll = ChartValues;
             SetChartTitles("Utgifter", "Totalt utgifter efter kategori");
+            _currentActiveCommand = new DelegateCommand(ChartExpensesByCategory);
         }
 
         private void ChartIncomeByCategory()
         {
             if (ChartValues == null) return;
             ChartValues.Clear();
-            foreach (var c in bm.GetCategoryList())
+            if (Month != 0)
             {
-                ChartValues.Add(new DataPoint() {Name = c.CategoryName, Number = bm.GetIncomeByCategory(c)});
+                foreach (var c in bm.GetCategoryList())
+                {
+                    ChartValues.Add(new DataPoint() {Name = c.CategoryName, Number = bm.GetIncomeByCategory(c, Month, Year)});
+                }
             }
+            else
+            {
+                foreach (var c in bm.GetCategoryList())
+                {
+                    ChartValues.Add(new DataPoint() {Name = c.CategoryName, Number = bm.GetIncomeByCategory(c, Year)});
+                }
+            }
+            ChartValuesAll = ChartValues;
             SetChartTitles("Inkomster", "Totalt inkomster efter kategori");
+            _currentActiveCommand = new DelegateCommand(ChartIncomeByCategory);
         }
 
         private void ChartAssetsByAccount()
@@ -203,7 +265,9 @@ namespace HomeBudgetMVVM.ViewModels
             {
                 ChartValues.Add(new DataPoint() { Name = a.AccountName, Number = a.Balance });
             }
+            ChartValuesAll = ChartValues;
             SetChartTitles("Tillgångar", "Totalt antal tillgångar per konto");
+            _currentActiveCommand = new DelegateCommand(ChartAssetsByAccount);
         }
         
         private void SwitchToPie(object sender, RoutedEventArgs e)

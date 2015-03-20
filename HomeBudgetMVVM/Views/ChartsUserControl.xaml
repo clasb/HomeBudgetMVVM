@@ -26,7 +26,7 @@
             <Button Margin="3" Command="{Binding ChartAssetsByAccountCommand}">
                 Tillgångar/konto
             </Button>
-            <ComboBox ItemsSource="{Binding MonthNames}" SelectedValue="{Binding Month, Mode=TwoWay}"/>
+            <ComboBox ItemsSource="{Binding MonthNames}" SelectedValue="{Binding MonthString, Mode=TwoWay}"/>
             <ComboBox ItemsSource="{Binding Years}" SelectedValue="{Binding Year, Mode=TwoWay}"/>
             <Label Content="{Binding Month}" />
             <Label Content="{Binding Year}" />

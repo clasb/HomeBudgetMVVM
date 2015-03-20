@@ -25,6 +25,11 @@ namespace HomeBudgetMVVM.Models
             return App.Database.AccountEvents().ToList();
         }
 
+        public AccountEvent GetAccountEventByName(string name)
+        {
+            return am.GetAccountEventByName(name);
+        }
+
         public List<AccountEvent> GetAccountEventListByAccount(Account a)
         {
             return am.GetAccountEventListByAccount(a);
@@ -59,14 +64,24 @@ namespace HomeBudgetMVVM.Models
             return App.Database.Categories().ToList();
         }
 
-        public double GetExpensesByCategory(Category c)
+        public double GetExpensesByCategory(Category c, int year)
         {
-            return am.GetExpensesByCategory(c);
+            return am.GetExpensesByCategory(c, year);
         }
 
-        public double GetIncomeByCategory(Category c)
+        public double GetExpensesByCategory(Category c,int year, int month)
         {
-            return am.GetIncomeByCategory(c);
+            return am.GetExpensesByCategory(c,year, month);
+        }
+
+        public double GetIncomeByCategory(Category c, int year)
+        {
+            return am.GetIncomeByCategory(c, year);
+        }
+
+        public double GetIncomeByCategory(Category c,int year, int month)
+        {
+            return am.GetIncomeByCategory(c,year, month);
         }
 
         internal void AddAccount()
