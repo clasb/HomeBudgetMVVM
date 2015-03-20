@@ -75,7 +75,7 @@ namespace HomeBudgetMVVM.Models
                 CategoryID = winAIE.EventCategory.ID,
                 EventBalance = balance,
                 EventComment = winAIE.EventComment,
-                Date = this.date
+                Date = winAIE.Date
             });
         }
 
@@ -123,6 +123,79 @@ namespace HomeBudgetMVVM.Models
                 {
                     return new List<AccountEvent>();
                 }
+            }
+        }
+
+        public List<AccountEvent> GetPastAccountEvents()
+        {
+            try
+            {
+                List<AccountEvent> tempList = new List<AccountEvent>();
+                foreach (var a in App.Database.AccountEvents().ToList())
+                {
+                    if (DateTime.Compare(a.Date, DateTime.Now) <= 0)
+                        tempList.Add(a);
+                }
+                return tempList;
+            }
+            catch (Exception)
+            {
+                return new List<AccountEvent>();
+            }
+        }
+
+        public List<AccountEvent> GetComingAccountEvents()
+        {
+            try
+            {
+                List<AccountEvent> tempList = new List<AccountEvent>();
+                foreach (var a in App.Database.AccountEvents().ToList())
+                {
+                    if (DateTime.Compare(a.Date, DateTime.Now) > 0)
+                        tempList.Add(a);
+                }
+                return tempList;
+                //return App.Database.GetComingAccountEvents().ToList();
+            }
+            catch (Exception)
+            {
+                return new List<AccountEvent>();
+            }
+        }
+
+        public List<AccountEvent> GetPastAccountEventsByCategory(Category c)
+        {
+            try
+            {
+                List<AccountEvent> tempList = new List<AccountEvent>();
+                foreach (var a in App.Database.GetAccountEventsByCategory(c.ID).ToList())
+                {
+                    if (DateTime.Compare(a.Date, DateTime.Now) <= 0)
+                        tempList.Add(a);
+                }
+                return tempList;
+            }
+            catch (Exception)
+            {
+                return new List<AccountEvent>();
+            }
+        }
+
+        public List<AccountEvent> GetComingAccountEventsByCategory(Category c)
+        {
+            try
+            {
+                List<AccountEvent> tempList = new List<AccountEvent>();
+                foreach (var a in App.Database.GetAccountEventsByCategory(c.ID).ToList())
+                {
+                    if (DateTime.Compare(a.Date, DateTime.Now) > 0)
+                        tempList.Add(a);
+                }
+                return tempList;
+            }
+            catch (Exception)
+            {
+                return new List<AccountEvent>();
             }
         }
 

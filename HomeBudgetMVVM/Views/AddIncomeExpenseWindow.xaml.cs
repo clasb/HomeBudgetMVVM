@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +19,11 @@ namespace HomeBudgetMVVM.Views
     /// <summary>
     /// Interaction logic for AddIncomeExpenseWindow.xaml
     /// </summary>
-    public partial class AddIncomeExpenseWindow : Window
+    public partial class AddIncomeExpenseWindow : Window, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private List<Account> accountList;
         private List<Category> categoryList;
-
         public AddIncomeExpenseWindow(List<Account> aL, List<Category> cL)
         {
             InitializeComponent();
@@ -33,6 +34,60 @@ namespace HomeBudgetMVVM.Views
             foreach (Category c in categoryList)
                 CategoryListBox.Items.Add(c);
         }
+
+        //private List<Account> _accountList;
+        //public List<Account> AccountList
+        //{
+        //    get { return _accountList; }
+        //    set
+        //    {
+        //        _accountList = value;
+        //        RaisePropertyChanged("AccountList");
+        //    }
+        //}
+
+        //private List<Category> _categoryList;
+        //public List<Category> CategoryList
+        //{
+        //    get { return _categoryList; }
+        //    set
+        //    {
+        //        _categoryList = value;
+        //        RaisePropertyChanged("CategoryList");
+        //    }
+        //}
+
+        //private Account _eventAccount;
+        //public Account EventAccount
+        //{
+        //    get { return _eventAccount; }
+        //    set
+        //    {
+        //        _eventAccount = value;
+        //        RaisePropertyChanged("AccountList");
+        //    }
+        //}
+
+        //private Category _eventCategory;
+        //public Category EventCategory
+        //{
+        //    get { return _eventCategory; }
+        //    set
+        //    {
+        //        _eventCategory = value;
+        //        RaisePropertyChanged("AccountList");
+        //    }
+        //}
+
+
+        //private void RaisePropertyChanged(string propertyName)
+        //{
+        //    if (this.PropertyChanged != null)
+        //    {
+        //        this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
+
 
         public static readonly DependencyProperty EventAccountProperty = DependencyProperty.Register("EventAccount", typeof(Account), typeof(AddIncomeExpenseWindow), new UIPropertyMetadata(new Account(DateTime.Now)));
         public Account EventAccount
@@ -53,6 +108,13 @@ namespace HomeBudgetMVVM.Views
         {
             get { return (Category)GetValue(EventCategoryProperty); }
             set { SetValue(EventCategoryProperty, value); }
+        }
+
+        public static readonly DependencyProperty DateProperty = DependencyProperty.Register("Date", typeof(DateTime), typeof(AddIncomeExpenseWindow), new UIPropertyMetadata(DateTime.Now));
+        public DateTime Date
+        {
+            get { return (DateTime)GetValue(DateProperty); }
+            set { SetValue(DateProperty, value); }
         }
 
         public static readonly DependencyProperty EventBalanceProperty = DependencyProperty.Register("EventBalance", typeof(double), typeof(AddIncomeExpenseWindow), new UIPropertyMetadata(null));

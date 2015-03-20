@@ -16,7 +16,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -40,12 +39,13 @@
                 <GridView>
                     <GridViewColumn Header="Typ" DisplayMemberBinding="{Binding EventType}" />
                     <GridViewColumn Header="Summa" DisplayMemberBinding="{Binding EventBalance}" />
+                    <GridViewColumn Header="Datum" DisplayMemberBinding="{Binding Date}" />
                     <GridViewColumn Header="Kommentar" DisplayMemberBinding="{Binding EventComment}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
-            <views:ChartsUserControl/>
+        <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch">
+            <views:ChartsUserControl VerticalAlignment="Stretch"/>
         </StackPanel>
     </Grid>
 </UserControl>

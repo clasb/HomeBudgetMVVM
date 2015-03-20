@@ -20,7 +20,8 @@ namespace HomeBudgetMVVM.ViewModels
             bm = new BudgetManager();
             Accounts = bm.GetAccountList();
             Categories = bm.GetCategoryList();
-            AccountEvents = bm.GetAccountEventList();
+            PastAccountEvents = bm.GetPastAccountEventList();
+            ComingAccountEvents = bm.GetComingAccountEventList();
             _newExpenseCommand = new DelegateCommand(AddExpense);
             _newIncomeCommand = new DelegateCommand(AddIncome);
             _newCategoryCommand = new DelegateCommand(NewCategory);
@@ -30,19 +31,21 @@ namespace HomeBudgetMVVM.ViewModels
         private void AddExpense()
         {
             bm.NewExpense();
-            AccountEvents = App.Database.AccountEvents().ToList();
+            PastAccountEvents = bm.GetPastAccountEventList();
+            ComingAccountEvents = bm.GetComingAccountEventList();
         }
 
         private void AddIncome()
         {
             bm.NewIncome();
-            AccountEvents = App.Database.AccountEvents().ToList();
+            PastAccountEvents = bm.GetPastAccountEventList();
+            ComingAccountEvents = bm.GetComingAccountEventList();
         }
 
         private void NewCategory()
         {
             bm.NewCategory();
-            Categories = App.Database.Categories().ToList();
+            Categories = bm.GetCategoryList();
         }
         #endregion
 
@@ -76,7 +79,8 @@ namespace HomeBudgetMVVM.ViewModels
             {
                 if (value == null) return;
                 _selectedCategory = value;
-                AccountEvents = bm.GetAccountEventListByCategory(value);
+                PastAccountEvents = bm.GetPastAccountEventListByCategory(value);
+                ComingAccountEvents = bm.GetComingAccountEventListByCategory(value);
                 SelectedCategoryId = value.ID;
                 RaisePropertyChanged("SelectedAccount");
             }
@@ -115,14 +119,26 @@ namespace HomeBudgetMVVM.ViewModels
             }
         }
 
-        private List<AccountEvent> _accountEvents;
-        public List<AccountEvent> AccountEvents
+        private List<AccountEvent> _pastAccountEvents;
+        public List<AccountEvent> PastAccountEvents
         {
-            get { return _accountEvents; }
+            get { return _pastAccountEvents; }
             set
             {
-                _accountEvents = value;
-                RaisePropertyChanged("AccountEvents");
+                _pastAccountEvents = value;
+                RaisePropertyChanged("PastAccountEvents");
+            }
+        }
+
+        private List<AccountEvent> _comingAccountEvents;
+
+        public List<AccountEvent> ComingAccountEvents
+        {
+            get { return _comingAccountEvents; }
+            set
+            {
+                _comingAccountEvents = value;
+                RaisePropertyChanged("ComingAccountEvents");
             }
         }
         #endregion

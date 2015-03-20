@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,6 +40,66 @@ namespace HomeBudgetMVVM.ViewModels
         }
 
         #region Properties
+
+        private int _month;
+        public int Month
+        {
+            get { return _month; }
+            set
+            {
+                _month = value;
+                RaisePropertyChanged("Month");
+            }
+        }
+
+        private int _year;
+        public int Year
+        {
+            get { return _year; }
+            set
+            {
+                _year = value;
+                RaisePropertyChanged("Year");
+            }
+        }
+
+        private ObservableCollection<int> _months;
+        public ObservableCollection<int> Months
+        {
+            get { return new ObservableCollection<int>(){1,2,3,4,5,6,7,8,9,10,11,12};}
+        }
+
+        public ObservableCollection<string> MonthNames
+        {
+            get
+            {
+                ObservableCollection<string> monthNames = new ObservableCollection<string>();
+                monthNames.Add("Hela året");
+                foreach (var month in Months)
+                {
+                    monthNames.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
+                }
+                return monthNames;
+            }
+        }
+        
+        private ObservableCollection<int> _years;
+        public ObservableCollection<int> Years
+        {
+            get
+            {
+                _years = new ObservableCollection<int>();
+                for (var year = 2010; year < 2020; year++)
+                {
+                    _years.Add(year);
+                }
+                return _years;
+            }
+        }
+
+         
+
+
         private ObservableCollection<DataPoint> _chartValues;
         public ObservableCollection<DataPoint> ChartValues
         {
@@ -67,7 +129,7 @@ namespace HomeBudgetMVVM.ViewModels
             set
             {
                 _chartSubTitle = value;
-                RaisePropertyChanged("ChartTitle");
+                RaisePropertyChanged("ChartSubTitle");
             }
         }
 

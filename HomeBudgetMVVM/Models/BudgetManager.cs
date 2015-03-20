@@ -35,6 +35,25 @@ namespace HomeBudgetMVVM.Models
             return am.GetAccountEventListByCategory(c);
         }
 
+        public List<AccountEvent> GetPastAccountEventList()
+        {
+            return am.GetPastAccountEvents();
+        }
+
+        public List<AccountEvent> GetComingAccountEventList()
+        {
+            return am.GetComingAccountEvents();
+        }
+
+        public List<AccountEvent> GetPastAccountEventListByCategory(Category c)
+        {
+            return am.GetPastAccountEventsByCategory(c);
+        }
+        public List<AccountEvent> GetComingAccountEventListByCategory(Category c)
+        {
+            return am.GetComingAccountEventsByCategory(c);
+        }
+
         public List<Category> GetCategoryList()
         {
             return App.Database.Categories().ToList();

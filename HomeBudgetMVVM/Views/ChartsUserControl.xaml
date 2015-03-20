@@ -6,12 +6,17 @@
              xmlns:metroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
              xmlns:viewModels="clr-namespace:HomeBudgetMVVM.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="800" d:DesignWidth="300">
     <UserControl.DataContext>
         <viewModels:ChartViewModel />
     </UserControl.DataContext>
-    <Grid>
-        <StackPanel Orientation="Horizontal">
+    <!--<Grid Background="#FFE5E5E5" >
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>-->
+    <DockPanel LastChildFill="True">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <Button Margin="3" Command="{Binding ChartExpensesByCategoryCommand}">
                 Utgifter/kategori
             </Button>
@@ -21,7 +26,12 @@
             <Button Margin="3" Command="{Binding ChartAssetsByAccountCommand}">
                 Tillgångar/konto
             </Button>
-        <TabControl Grid.Column="0" Background="White">
+            <ComboBox ItemsSource="{Binding MonthNames}" SelectedValue="{Binding Month, Mode=TwoWay}"/>
+            <ComboBox ItemsSource="{Binding Years}" SelectedValue="{Binding Year, Mode=TwoWay}"/>
+            <Label Content="{Binding Month}" />
+            <Label Content="{Binding Year}" />
+        </StackPanel>
+        <TabControl Background="White" >
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -29,27 +39,35 @@
                         <TextBlock>Cirkeldiagram</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
-                <StackPanel>
-                    <metroChart:PieChart Visibility="Visible"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                        <metroChart:PieChart 
                                     x:Name="Pie"
+                                    Grid.Column="0"
+                                    Grid.Row="0"
                                     ChartTitle="{Binding ChartTitle}"
                                     ChartSubTitle="{Binding ChartSubTitle}"
-                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" >
+                                    SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
 
                         <metroChart:PieChart.Series>
-                            <metroChart:ChartSeries  SeriesTitle="ChartValues"
+                                <metroChart:ChartSeries  SeriesTitle="ChartValues"
                                                 DisplayMember="Name"
                                                 ValueMember="Number"
                                                 ItemsSource="{Binding Path=ChartValues}" />
                         </metroChart:PieChart.Series>
                     </metroChart:PieChart>
-                </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Width="10" Height="10" Fill="DarkGray"/>
-                        <TextBlock>Konton</TextBlock>
+                        <TextBlock>Staplat</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <StackPanel>
@@ -71,7 +89,7 @@
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Width="10" Height="10" Fill="DarkGray"/>
-                        <TextBlock>Inkomster och utgifter</TextBlock>
+                        <TextBlock>Staplar</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <StackPanel>
@@ -93,7 +111,7 @@
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Width="10" Height="10" Fill="DarkGray"/>
-                        <TextBlock>Inkomster och utgifter</TextBlock>
+                        <TextBlock>Test</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <StackPanel>
@@ -112,10 +130,9 @@
                 </StackPanel>
             </TabItem>
         </TabControl>
-        </StackPanel>
-        
-        
-        
-        
-    </Grid> 
+
+
+
+    </DockPanel>
+    <!--</Grid>--> 
 </UserControl>

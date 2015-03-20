@@ -118,6 +118,46 @@ namespace HomeBudgetMVVM.Database
             }
         }
 
+        public IEnumerable<AccountEvent> GetPastAccountEvents()
+        {
+            lock (locker)
+            {
+                var eventList = database.Query<AccountEvent>("SELECT * FROM AccountEvent WHERE Date <= ?",
+                    DateTime.Now);
+                return eventList;
+            }
+        }
+
+        public IEnumerable<AccountEvent> GetComingAccountEvents()
+        {
+            lock (locker)
+            {
+                var eventList = database.Query<AccountEvent>("SELECT * FROM AccountEvent WHERE Date > ?",
+                    DateTime.Now);
+                return eventList;
+            }
+        }
+
+        public IEnumerable<AccountEvent> GetPastAccountEventsByCategory(Category c)
+        {
+            lock (locker)
+            {
+                var eventList = database.Query<AccountEvent>("SELECT * FROM AccountEvent WHERE Date <= ?",
+                    DateTime.Now);
+                return eventList;
+            }
+        }
+
+        public IEnumerable<AccountEvent> GetComingAccountEventsByCategory(Category c)
+        {
+            lock (locker)
+            {
+                var eventList = database.Query<AccountEvent>("SELECT * FROM AccountEvent WHERE Date > ?",
+                    DateTime.Now);
+                return eventList;
+            }
+        }
+
         public int DeleteAccountEvent(int id)
         {
             lock (locker)

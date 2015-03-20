@@ -91,6 +91,7 @@
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
     <Compile Include="ViewModels\AccountsViewModel.cs" />
+    <Compile Include="ViewModels\AddIncomeExpenseViewModel.cs" />
     <Compile Include="ViewModels\ChartViewModel.cs" />
     <Compile Include="ViewModels\IncomeExpenseViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

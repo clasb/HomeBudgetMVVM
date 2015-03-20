@@ -31,7 +31,8 @@
                 <TextBlock x:Name="txtMonth" Text="Månad" />
                 <Button x:Name="btnDateForward"  ToolTip="Flytta en månad framåt" Content=" &gt; " Margin="10,0" />
             </StackPanel>-->
-            <ListView x:Name="IncomeExpenseList" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding AccountEvents}">
+            <Label Grid.Column="1" >Gjorda överföringar</Label>
+            <ListView x:Name="IncomeExpenseList" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding PastAccountEvents}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Kontonamn" DisplayMemberBinding="{Binding EventAccount}" />
@@ -40,12 +41,21 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-        <ListView x:Name="CategoryList" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
+        <Label Grid.Column="2" >Kommande överföringar</Label>
+        <ListView x:Name="ComingIncomeExpenseList" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding ComingAccountEvents}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Kontonamn" DisplayMemberBinding="{Binding EventAccount}" />
+                    <GridViewColumn Header="Transaktion" DisplayMemberBinding="{Binding EventBalance}" />
+                    <GridViewColumn Header="Kommentar" DisplayMemberBinding="{Binding EventComment}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Grid.Column="3" >Kategorier</Label>
+        <ListView x:Name="CategoryList" Grid.Column="3" Grid.Row="1" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Kategori" DisplayMemberBinding="{Binding CategoryName}" />
-                    <GridViewColumn Header="+" DisplayMemberBinding="{Binding CategoryIncomeAdded}" />
-                    <GridViewColumn Header="-" DisplayMemberBinding="{Binding CategoryExpenseAdded}" />
                     <GridViewColumn Header="Totalt" DisplayMemberBinding="{Binding CategoryBalance}" />
                     <GridViewColumn Header="Kommentar" DisplayMemberBinding="{Binding CategoryComment}" />
                 </GridView>
